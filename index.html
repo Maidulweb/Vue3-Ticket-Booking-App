@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ticket Booking App</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="vue.global.js"></script>
+  </head>
+  <body>
+    <div class="header">
+      <h1>Ticket Booking App</h1>
+    </div>
+    <div id="app">
+      <div class="container">
+        <div class="confirm" v-if="confirmed">
+          <p>Name: {{name}}</p>
+          <p>Mobile: {{mobile}}</p>
+          <p class="" v-for="(seat ,i) in allSelectedSeats">
+            Seat: {{seat.name}}
+          </p>
+          <p>Total : {{totalCost}}</p>
+          <button @click="reset">Back Again</button>
+        </div>
+        <div v-else>
+          <div class="top-header flex-justify-between">
+            <div v-for="(item, key) in identity">
+              <div class="flex-justify-between">
+                <div
+                  class="identity-color"
+                  :style="{backgroundColor:item.color}"
+                ></div>
+                <div class="identity-text">{{item.text}}</div>
+              </div>
+            </div>
+          </div>
+          <div class="body flex">
+            <div class="body-top-header-left">
+              <div class="flex-justify-between">
+                <p class="door">Door</p>
+                <p class="driver">Driver</p>
+              </div>
+              <div class="seats">
+                <div
+                  class="seat"
+                  :class="{'sold':seat.type==='sold','booked':seat.type==='booked','selected':seat.type==='selected'}"
+                  v-for="(seat, i) in seats"
+                  :key="seat.name"
+                  @click="handleClickSeat(i)"
+                >
+                  {{seat.name}}
+                </div>
+              </div>
+            </div>
+            <div class="body-top-header-right">
+              <div class="padd">
+                <h3>Information</h3>
+                <div
+                  class="no-seat-selected"
+                  v-if="allSelectedSeats.length===0"
+                >
+                  <h3>No seats are selected</h3>
+                </div>
+                <div class="table-body" v-else>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th class="border">Seat No</th>
+                        <th class="border">Price</th>
+                      </tr>
+                    </thead>
+                    <tr v-for="seat in allSelectedSeats">
+                      <td class="border">{{seat.name}}</td>
+                      <td class="border">{{seat.price}}</td>
+                    </tr>
+                    <tr v-if="appliedCoupon!==null">
+                      <th class="border">Discount :</th>
+                      <td class="border">-{{appliedCoupon.amount}}</td>
+                    </tr>
+
+                    <tr>
+                      <th>Total :</th>
+                      <td>{{totalCost}}</td>
+                    </tr>
+                  </table>
+                  <div class="name-mobile">
+                    <input
+                      v-model="name"
+                      type="text"
+                      placeholder="Your Name"
+                    /><br />
+                    <input
+                      v-model="mobile"
+                      type="text"
+                      placeholder="Your Mobile"
+                    />
+                    <button @click="submit">Submit</button>
+                  </div>
+
+                  <div class="flex-justify-between coupon">
+                    <label for="">Coupon :</label>
+                    <input
+                      type="text"
+                      placeholder="Coupon Code"
+                      v-model="couponCode"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="main.js"></script>
+  </body>
+</html>
